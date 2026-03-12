@@ -117,7 +117,7 @@ cal_plot_map_data <- function(LANG_TLS,COUNTRY_NAME,YEAR_LIST,ZERO_POB_LIST,CUT_
     } else if (var_to_summarise == "silent_mun") {
       
       legend_title = lang_label_tls(LANG_TLS, "silent_mun_legend")
-      map_data <- map_data %>% rename("var"=var_to_summarise)
+      map_data <- map_data %>% rename(var = all_of(var_to_summarise))
       #print(colnames(map_data))
       
       if (admin1_id == 0) {
@@ -189,7 +189,7 @@ cal_plot_map_data <- function(LANG_TLS,COUNTRY_NAME,YEAR_LIST,ZERO_POB_LIST,CUT_
     }
     else {
       # % de casos o muestras
-      map_data <- map_data %>% rename("var"=var_to_summarise)
+      map_data <- map_data %>% rename(var = all_of(var_to_summarise))
       map_data$var <- round(map_data$var,1)
       
       if (var_to_summarise %in% c("p_casos_inv","p_casos_muestra")) {
@@ -265,7 +265,7 @@ cal_plot_map_data <- function(LANG_TLS,COUNTRY_NAME,YEAR_LIST,ZERO_POB_LIST,CUT_
     }
     
   } else {
-    map_data <- map_data %>% rename("var"=var_to_summarise)
+    map_data <- map_data %>% rename(var = all_of(var_to_summarise))
     map_data$var <- round(map_data$var,0)
     
     if (admin1_id == 0) {
