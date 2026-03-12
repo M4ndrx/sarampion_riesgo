@@ -19,6 +19,24 @@ p_load(devtools,webshot,lubridate,forcats,stringr,dplyr,purrr,readr,tibble,
        htmltools,fontawesome,data.table,knitr,geojsonio,rmapshaper,sp,
        tinytex,DT)
 
+# 0. PARALLEL              ----------------------------------------
+N_CORES <- parallel::detectCores(logical = TRUE)
+N_CORES <- ifelse(is.na(N_CORES) | N_CORES < 1, 1, N_CORES)
+
+options(mc.cores = N_CORES)
+
+Sys.setenv(
+  OMP_NUM_THREADS = N_CORES,
+  OPENBLAS_NUM_THREADS = N_CORES,
+  MKL_NUM_THREADS = N_CORES,
+  VECLIB_MAXIMUM_THREADS = N_CORES,
+  NUMEXPR_NUM_THREADS = N_CORES
+)
+
+data.table::setDTthreads(threads = N_CORES)
+
+message(paste0("Parallel activo con ", N_CORES, " núcleos."))
+
 # 1. FLAG                 ----------------------------------------
 file.copy(from = "Data/country_flag.png",to ="R/Dashboard/www/country_flag.png",overwrite = T)
 
@@ -39,4 +57,3 @@ file.remove(from = "R/SR_report_WORD.docx")
 
 # 4. DASHBOARD            ----------------------------------------
 shiny::runApp("R/Dashboard/app.R")
-

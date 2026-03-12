@@ -28,7 +28,7 @@ rend_plot_map_data <- function(LANG_TLS,COUNTRY_NAME,YEAR_LIST,ZERO_POB_LIST,CUT
   
   map_data$`ADMIN1 GEO_ID`[is.na(map_data$`ADMIN1 GEO_ID`) & map_data$ADMIN1 == admin1] <- admin1_geo_id_df$`ADMIN1 GEO_ID`[admin1_geo_id_df$ADMIN1 == admin1]
   
-  map_data <- map_data %>% rename("var"=var_to_summarise)
+  map_data <- map_data %>% rename(var = all_of(var_to_summarise))
   
   if (admin1_id == 0) {
     map_data <- map_data %>% select(ADMIN1,ADMIN2,var,geometry,GEO_ID)
@@ -89,7 +89,7 @@ rend_plot_map_data <- function(LANG_TLS,COUNTRY_NAME,YEAR_LIST,ZERO_POB_LIST,CUT
     
     
     # MAPA
-    map <- leaflet(map_data,options = leafletOptions(doubleClickZoom = T, attributionControl = F, zoomSnap=0.1, zoomDelta=0.1)) %>%
+    map <- leaflet(map_data,options = leafletOptions(doubleClickZoom = T, attributionControl = F, zoomSnap=0.1, zoomDelta=0.1, preferCanvas = TRUE)) %>%
       addProviderTiles(providers$Esri.WorldGrayCanvas) %>%
       addPolygons(
         fillColor   = ~pal_gradient(risk_level_num),
@@ -153,7 +153,7 @@ rend_plot_map_data <- function(LANG_TLS,COUNTRY_NAME,YEAR_LIST,ZERO_POB_LIST,CUT
     ) %>% lapply(HTML)
     
     # MAPA
-    map <- leaflet(map_data,options = leafletOptions(doubleClickZoom = T, attributionControl = F, zoomSnap=0.1, zoomDelta=0.1)) %>%
+    map <- leaflet(map_data,options = leafletOptions(doubleClickZoom = T, attributionControl = F, zoomSnap=0.1, zoomDelta=0.1, preferCanvas = TRUE)) %>%
       addProviderTiles(providers$Esri.WorldGrayCanvas) %>%
       addPolygons(
         fillColor   = ~pal_gradient(var_level_num),
@@ -216,7 +216,7 @@ rend_plot_map_data <- function(LANG_TLS,COUNTRY_NAME,YEAR_LIST,ZERO_POB_LIST,CUT
     ) %>% lapply(HTML)
     
     # MAPA
-    map <- leaflet(map_data,options = leafletOptions(doubleClickZoom = T, attributionControl = F, zoomSnap=0.1, zoomDelta=0.1)) %>%
+    map <- leaflet(map_data,options = leafletOptions(doubleClickZoom = T, attributionControl = F, zoomSnap=0.1, zoomDelta=0.1, preferCanvas = TRUE)) %>%
       addProviderTiles(providers$Esri.WorldGrayCanvas) %>%
       addPolygons(
         fillColor   = ~pal_gradient(var_level_num),

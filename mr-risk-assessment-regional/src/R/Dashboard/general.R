@@ -41,8 +41,18 @@ hdash <- function(y = 0, color = "#666666") {
   )
 }
 
+replace_geo_unit_terms_tls <- function(text) {
+  if (exists("LANG", inherits = TRUE) && LANG == "SPA") {
+    text <- gsub("\\bPaíses\\b", "Cantones", text)
+    text <- gsub("\\bpaíses\\b", "cantones", text)
+    text <- gsub("\\bPaís\\b", "Cantón", text)
+    text <- gsub("\\bpaís\\b", "cantón", text)
+  }
+  return(text)
+}
+
 lang_label_tls <- function(LANG_TLS,label) {
-  return(LANG_TLS$LANG[LANG_TLS$LABEL == label])
+  return(replace_geo_unit_terms_tls(LANG_TLS$LANG[LANG_TLS$LABEL == label]))
 }
 
 
@@ -116,7 +126,7 @@ ind_prep_bar_data <- function(LANG_TLS,CUT_OFFS,data,indicator,admin1_id,risk) {
     indicator == "RAP_RES" ~ "RES_RAPIDA"
   )
   
-  prep_data <- data %>% rename("PR"=var_to_summarise)
+  prep_data <- data %>% rename(PR = all_of(var_to_summarise))
   
   if (admin1_id == 0) {
     prep_data <- prep_data %>% filter(!is.na(PR)) %>% select(ADMIN2,PR)
@@ -145,7 +155,7 @@ ind_prep_map_data <- function(LANG_TLS,ZERO_POB_LIST,CUT_OFFS,map_data,data,indi
     indicator == "RAP_RES" ~ "RES_RAPIDA"
   )
   
-  map_data <- map_data %>% rename("PR"=var_to_summarise)
+  map_data <- map_data %>% rename(PR = all_of(var_to_summarise))
   map_data$risk_level <- get_risk_level(LANG_TLS,CUT_OFFS,indicator,map_data$PR)
   map_data$risk_level[map_data$GEO_ID %in% ZERO_POB_LIST] <- "NO_HAB"
   
@@ -175,7 +185,7 @@ ind_get_bar_table <- function(LANG_TLS,CUT_OFFS,data,indicator,admin1_id,risk) {
   )
   
   if (indicator != "GENERAL") {
-    data <- data %>% rename("PR"=var_to_summarise)
+    data <- data %>% rename(PR = all_of(var_to_summarise))
     
     if (admin1_id == 0) {
       data <- data %>% filter(!is.na(PR)) %>% select(ADMIN1,ADMIN2,PR)
@@ -367,7 +377,7 @@ ind_plot_multibar_data <- function(LANG_TLS,CUT_OFFS,bar_data,admin1_id,selected
         selected_indicador == "RAP_RES" ~ "RES_RAPIDA"
       )
       
-      bar_data <- bar_data %>% rename(VAR=var_to_summarise)
+      bar_data <- bar_data %>% rename(VAR = all_of(var_to_summarise))
       bar_data$other_PR <- bar_data$TOTAL_PR - bar_data$VAR
       
       bar_data$risk_level <- get_risk_level(LANG_TLS,CUT_OFFS,selected_indicador,bar_data$VAR)
@@ -494,7 +504,7 @@ ind_plot_map_data <- function(LANG_TLS,ZERO_POB_LIST,CUT_OFFS,map_data,indicator
   ) %>% lapply(HTML)
   
   # MAPA
-  map <- leaflet(map_data,options = leafletOptions(doubleClickZoom = T, attributionControl = F, zoomSnap=0.1, zoomDelta=0.1)) %>%
+  map <- leaflet(map_data,options = leafletOptions(doubleClickZoom = T, attributionControl = F, zoomSnap=0.1, zoomDelta=0.1, preferCanvas = TRUE)) %>%
     addProviderTiles(providers$Esri.WorldGrayCanvas) %>%
     addPolygons(
       fillColor   = ~pal_gradient(risk_level_num),
@@ -534,7 +544,7 @@ ind_prep_box_data <- function(LANG_TLS,CUT_OFFS,data,indicator,admin1_id) {
     indicator == "RAP_RES" ~ "RES_RAPIDA"
   )
   
-  prep_data <- data %>% rename("PR"=var_to_summarise)
+  prep_data <- data %>% rename(PR = all_of(var_to_summarise))
   
   if (admin1_id == 0) {
     prep_data <- prep_data %>% filter(!is.na(PR)) %>% select(LUGAR=ADMIN2,PR)

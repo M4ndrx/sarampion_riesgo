@@ -139,7 +139,7 @@ inmu_plot_map_data <- function(LANG_TLS,YEAR_CAMP_SR,COUNTRY_NAME,YEAR_LIST,ZERO
   map_data$`ADMIN1 GEO_ID`[is.na(map_data$`ADMIN1 GEO_ID`) & map_data$ADMIN1 == admin1] <- admin1_geo_id_df$`ADMIN1 GEO_ID`[admin1_geo_id_df$ADMIN1 == admin1]
   
   if (var_to_summarise %in% c("SRP1_PR","SRP2_PR","cob_last_camp_PR","p_sospechosos_novac_PR","TOTAL_PR")) {
-    map_data <- map_data %>% rename("PR"=var_to_summarise)
+    map_data <- map_data %>% rename(PR = all_of(var_to_summarise))
     map_data$risk_level <- get_risk_level(LANG_TLS,CUT_OFFS,indicator,map_data$PR)
     
     if (var_to_summarise == "TOTAL_PR") {
@@ -202,7 +202,7 @@ inmu_plot_map_data <- function(LANG_TLS,YEAR_CAMP_SR,COUNTRY_NAME,YEAR_LIST,ZERO
       
       
       # MAPA
-      map <- leaflet(map_data,options = leafletOptions(doubleClickZoom = T, attributionControl = F, zoomSnap=0.1, zoomDelta=0.1)) %>%
+      map <- leaflet(map_data,options = leafletOptions(doubleClickZoom = T, attributionControl = F, zoomSnap=0.1, zoomDelta=0.1, preferCanvas = TRUE)) %>%
         addProviderTiles(providers$Esri.WorldGrayCanvas) %>%
         addPolygons(
           fillColor   = ~pal_gradient(risk_level_num),
@@ -243,7 +243,7 @@ inmu_plot_map_data <- function(LANG_TLS,YEAR_CAMP_SR,COUNTRY_NAME,YEAR_LIST,ZERO
       ) %>% lapply(HTML)
       
       # MAPA
-      map <- leaflet(map_data,options = leafletOptions(doubleClickZoom = T, attributionControl = F, zoomSnap=0.1, zoomDelta=0.1)) %>%
+      map <- leaflet(map_data,options = leafletOptions(doubleClickZoom = T, attributionControl = F, zoomSnap=0.1, zoomDelta=0.1, preferCanvas = TRUE)) %>%
         addProviderTiles(providers$Esri.WorldGrayCanvas) %>%
         addPolygons(
           fillColor   = ~pal_gradient(PR),
@@ -271,7 +271,7 @@ inmu_plot_map_data <- function(LANG_TLS,YEAR_CAMP_SR,COUNTRY_NAME,YEAR_LIST,ZERO
     "SRP1_year1","SRP1_year2","SRP1_year3","SRP1_year4","SRP1_year5",
     "SRP2_year1","SRP2_year2","SRP2_year3","SRP2_year4","SRP2_year5")) {
     # Cob map
-    map_data <- map_data %>% rename("COB"=var_to_summarise)
+    map_data <- map_data %>% rename(COB = all_of(var_to_summarise))
     map_data$COB <- round(map_data$COB,1)
     
     if (admin1_id == 0) {
@@ -317,7 +317,7 @@ inmu_plot_map_data <- function(LANG_TLS,YEAR_CAMP_SR,COUNTRY_NAME,YEAR_LIST,ZERO
     ) %>% lapply(HTML)
     
     # MAPA
-    map <- leaflet(map_data,options = leafletOptions(doubleClickZoom = T, attributionControl = F, zoomSnap=0.1, zoomDelta=0.1)) %>%
+    map <- leaflet(map_data,options = leafletOptions(doubleClickZoom = T, attributionControl = F, zoomSnap=0.1, zoomDelta=0.1, preferCanvas = TRUE)) %>%
       addProviderTiles(providers$Esri.WorldGrayCanvas) %>%
       addPolygons(
         fillColor   = ~pal_gradient(cob_level_num),
@@ -343,7 +343,7 @@ inmu_plot_map_data <- function(LANG_TLS,YEAR_CAMP_SR,COUNTRY_NAME,YEAR_LIST,ZERO
     
   } else if (var_to_summarise == "p_sospechosos_novac") {
     # Casos map
-    map_data <- map_data %>% rename("pcasos"=var_to_summarise)
+    map_data <- map_data %>% rename(pcasos = all_of(var_to_summarise))
     
     if (admin1_id == 0) {
       map_data <- map_data %>% select(GEO_ID,ADMIN1,ADMIN2,pcasos,geometry)
@@ -386,7 +386,7 @@ inmu_plot_map_data <- function(LANG_TLS,YEAR_CAMP_SR,COUNTRY_NAME,YEAR_LIST,ZERO
     ) %>% lapply(HTML)
     
     # MAPA
-    map <- leaflet(map_data,options = leafletOptions(doubleClickZoom = T, attributionControl = F, zoomSnap=0.1, zoomDelta=0.1)) %>%
+    map <- leaflet(map_data,options = leafletOptions(doubleClickZoom = T, attributionControl = F, zoomSnap=0.1, zoomDelta=0.1, preferCanvas = TRUE)) %>%
       addProviderTiles(providers$Esri.WorldGrayCanvas) %>%
       addPolygons(
         fillColor   = ~pal_gradient(casos_level_num),
