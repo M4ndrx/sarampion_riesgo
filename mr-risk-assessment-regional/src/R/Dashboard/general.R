@@ -41,8 +41,18 @@ hdash <- function(y = 0, color = "#666666") {
   )
 }
 
+replace_geo_unit_terms_tls <- function(text) {
+  if (exists("LANG", inherits = TRUE) && LANG == "SPA") {
+    text <- gsub("\\bPaíses\\b", "Cantones", text)
+    text <- gsub("\\bpaíses\\b", "cantones", text)
+    text <- gsub("\\bPaís\\b", "Cantón", text)
+    text <- gsub("\\bpaís\\b", "cantón", text)
+  }
+  return(text)
+}
+
 lang_label_tls <- function(LANG_TLS,label) {
-  return(LANG_TLS$LANG[LANG_TLS$LABEL == label])
+  return(replace_geo_unit_terms_tls(LANG_TLS$LANG[LANG_TLS$LABEL == label]))
 }
 
 
@@ -494,7 +504,7 @@ ind_plot_map_data <- function(LANG_TLS,ZERO_POB_LIST,CUT_OFFS,map_data,indicator
   ) %>% lapply(HTML)
   
   # MAPA
-  map <- leaflet(map_data,options = leafletOptions(doubleClickZoom = T, attributionControl = F, zoomSnap=0.1, zoomDelta=0.1)) %>%
+  map <- leaflet(map_data,options = leafletOptions(doubleClickZoom = T, attributionControl = F, zoomSnap=0.1, zoomDelta=0.1, preferCanvas = TRUE)) %>%
     addProviderTiles(providers$Esri.WorldGrayCanvas) %>%
     addPolygons(
       fillColor   = ~pal_gradient(risk_level_num),

@@ -39,8 +39,18 @@ get_a1_geo_id <- function(admin1) {
   return(admin1_geo_id_df$`ADMIN1 GEO_ID`[admin1_geo_id_df$ADMIN1 == admin1])
 }
 
+replace_geo_unit_terms <- function(text) {
+  if (exists("LANG", inherits = TRUE) && LANG == "SPA") {
+    text <- gsub("\\bPaíses\\b", "Cantones", text)
+    text <- gsub("\\bpaíses\\b", "cantones", text)
+    text <- gsub("\\bPaís\\b", "Cantón", text)
+    text <- gsub("\\bpaís\\b", "cantón", text)
+  }
+  return(text)
+}
+
 lang_label <- function(label) {
-  return(LANG_TLS$LANG[LANG_TLS$LABEL == label])
+  return(replace_geo_unit_terms(LANG_TLS$LANG[LANG_TLS$LABEL == label]))
 }
 
 # TITLES ----

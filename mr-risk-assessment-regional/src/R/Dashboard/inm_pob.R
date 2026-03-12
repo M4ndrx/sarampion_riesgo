@@ -202,7 +202,7 @@ inmu_plot_map_data <- function(LANG_TLS,YEAR_CAMP_SR,COUNTRY_NAME,YEAR_LIST,ZERO
       
       
       # MAPA
-      map <- leaflet(map_data,options = leafletOptions(doubleClickZoom = T, attributionControl = F, zoomSnap=0.1, zoomDelta=0.1)) %>%
+      map <- leaflet(map_data,options = leafletOptions(doubleClickZoom = T, attributionControl = F, zoomSnap=0.1, zoomDelta=0.1, preferCanvas = TRUE)) %>%
         addProviderTiles(providers$Esri.WorldGrayCanvas) %>%
         addPolygons(
           fillColor   = ~pal_gradient(risk_level_num),
@@ -243,7 +243,7 @@ inmu_plot_map_data <- function(LANG_TLS,YEAR_CAMP_SR,COUNTRY_NAME,YEAR_LIST,ZERO
       ) %>% lapply(HTML)
       
       # MAPA
-      map <- leaflet(map_data,options = leafletOptions(doubleClickZoom = T, attributionControl = F, zoomSnap=0.1, zoomDelta=0.1)) %>%
+      map <- leaflet(map_data,options = leafletOptions(doubleClickZoom = T, attributionControl = F, zoomSnap=0.1, zoomDelta=0.1, preferCanvas = TRUE)) %>%
         addProviderTiles(providers$Esri.WorldGrayCanvas) %>%
         addPolygons(
           fillColor   = ~pal_gradient(PR),
@@ -317,7 +317,7 @@ inmu_plot_map_data <- function(LANG_TLS,YEAR_CAMP_SR,COUNTRY_NAME,YEAR_LIST,ZERO
     ) %>% lapply(HTML)
     
     # MAPA
-    map <- leaflet(map_data,options = leafletOptions(doubleClickZoom = T, attributionControl = F, zoomSnap=0.1, zoomDelta=0.1)) %>%
+    map <- leaflet(map_data,options = leafletOptions(doubleClickZoom = T, attributionControl = F, zoomSnap=0.1, zoomDelta=0.1, preferCanvas = TRUE)) %>%
       addProviderTiles(providers$Esri.WorldGrayCanvas) %>%
       addPolygons(
         fillColor   = ~pal_gradient(cob_level_num),
@@ -386,7 +386,7 @@ inmu_plot_map_data <- function(LANG_TLS,YEAR_CAMP_SR,COUNTRY_NAME,YEAR_LIST,ZERO
     ) %>% lapply(HTML)
     
     # MAPA
-    map <- leaflet(map_data,options = leafletOptions(doubleClickZoom = T, attributionControl = F, zoomSnap=0.1, zoomDelta=0.1)) %>%
+    map <- leaflet(map_data,options = leafletOptions(doubleClickZoom = T, attributionControl = F, zoomSnap=0.1, zoomDelta=0.1, preferCanvas = TRUE)) %>%
       addProviderTiles(providers$Esri.WorldGrayCanvas) %>%
       addPolygons(
         fillColor   = ~pal_gradient(casos_level_num),
