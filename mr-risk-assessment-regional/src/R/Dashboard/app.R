@@ -964,11 +964,11 @@ server <- function(input, output, session) {
     ind_plot_multibar_data(LANG_TLS,CUT_OFFS,indicadores_data,get_a1_geo_id(input$indicadores_select_admin1),ind_rename(input$indicadores_select_indicador),risk_rename(input$indicadores_select_risk))
   })
   
-  output$indicadores_table <- renderDataTable(server = FALSE,{
+  output$indicadores_table <- DT::renderDataTable(server = FALSE,{
     ind_get_bar_table(LANG_TLS,CUT_OFFS,indicadores_data,ind_rename(input$indicadores_select_indicador),get_a1_geo_id(input$indicadores_select_admin1),risk_rename(input$indicadores_select_risk))
   })
   
-  output$indicadores_table_2 <- renderDataTable(server = FALSE,{
+  output$indicadores_table_2 <- DT::renderDataTable(server = FALSE,{
     ind_get_bar_table(LANG_TLS,CUT_OFFS,indicadores_data,ind_rename(input$indicadores_select_indicador),get_a1_geo_id(input$indicadores_select_admin1),risk_rename(input$indicadores_select_risk))
   })
   
@@ -1002,24 +1002,24 @@ server <- function(input, output, session) {
     ind_map_2$dat
   })
   
-  output$indicadores_rangos_table <- renderDataTable(server = FALSE,{
+  output$indicadores_rangos_table <- DT::renderDataTable(server = FALSE,{
     ind_rangos_table(LANG_TLS,CUT_OFFS,ind_rename(input$indicadores_select_indicador))
   })
   
   # Rangos tables
-  output$inmu_rangos_table <- renderDataTable(server = FALSE,{
+  output$inmu_rangos_table <- DT::renderDataTable(server = FALSE,{
     ind_rangos_table(LANG_TLS,CUT_OFFS,"INM_POB")
   })
-  output$cal_rangos_table <- renderDataTable(server = FALSE,{
+  output$cal_rangos_table <- DT::renderDataTable(server = FALSE,{
     ind_rangos_table(LANG_TLS,CUT_OFFS,"SURV_QUAL")
   })
-  output$rend_rangos_table <- renderDataTable(server = FALSE,{
+  output$rend_rangos_table <- DT::renderDataTable(server = FALSE,{
     ind_rangos_table(LANG_TLS,CUT_OFFS,"PROG_DEL")
   })
-  output$eval_rangos_table <- renderDataTable(server = FALSE,{
+  output$eval_rangos_table <- DT::renderDataTable(server = FALSE,{
     ind_rangos_table(LANG_TLS,CUT_OFFS,"THRE_ASSE")
   })
-  output$resrap_rangos_table <- renderDataTable(server = FALSE,{
+  output$resrap_rangos_table <- DT::renderDataTable(server = FALSE,{
     ind_rangos_table(LANG_TLS,CUT_OFFS,"RAP_RES")
   })
   
@@ -1036,16 +1036,16 @@ server <- function(input, output, session) {
     title_map_box(lang_label("INM_POB"),input$inmunidad_select_admin1)
   })
   
-  output$inmunidad_table <- renderDataTable(server = FALSE,{
+  output$inmunidad_table <- DT::renderDataTable(server = FALSE,{
     inmu_get_data_table(LANG_TLS,YEAR_LIST,CUT_OFFS,inmunidad_data,get_a1_geo_id(input$inmunidad_select_admin1))
   })
   
-  output$inmunidad_table_dist <- renderDataTable(server = FALSE,{
-    plot_pie_data(LANG_TLS,ZERO_POB_LIST,CUT_OFFS,"INM_POB",inmunidad_data,get_a1_geo_id(input$inmunidad_select_admin1),return_table=T)
+  output$inmunidad_table_dist <- DT::renderDataTable(server = FALSE,{
+    plot_pie_data(LANG_TLS,ZERO_POB_LIST,CUT_OFFS,"INM_POB",inmunidad_data,get_a1_geo_id(input$inmunidad_select_admin1),return_table=TRUE)
   })
   
   output$inmunidad_plot_pie <- renderPlotly({
-    plot_pie_data(LANG_TLS,ZERO_POB_LIST,CUT_OFFS,"INM_POB",inmunidad_data,get_a1_geo_id(input$inmunidad_select_admin1),return_table=F)
+    plot_pie_data(LANG_TLS,ZERO_POB_LIST,CUT_OFFS,"INM_POB",inmunidad_data,get_a1_geo_id(input$inmunidad_select_admin1),return_table=FALSE)
   })
   
   inmu_map_total <- reactiveValues(dat = 0)
@@ -1153,16 +1153,16 @@ server <- function(input, output, session) {
     title_pie_box(lang_label("SURV_QUAL"),input$calidad_select_admin1)
   })
   
-  output$calidad_table <- renderDataTable(server = FALSE,{
+  output$calidad_table <- DT::renderDataTable(server = FALSE,{
     cal_get_data_table(LANG_TLS,CUT_OFFS,calidad_data,get_a1_geo_id(input$calidad_select_admin1))
   })
   
-  output$calidad_table_dist <- renderDataTable(server = FALSE,{
-    plot_pie_data(LANG_TLS,ZERO_POB_LIST,CUT_OFFS,"SURV_QUAL",calidad_data,get_a1_geo_id(input$calidad_select_admin1),return_table=T)
+  output$calidad_table_dist <- DT::renderDataTable(server = FALSE,{
+    plot_pie_data(LANG_TLS,ZERO_POB_LIST,CUT_OFFS,"SURV_QUAL",calidad_data,get_a1_geo_id(input$calidad_select_admin1),return_table=TRUE)
   })
   
   output$calidad_plot_pie <- renderPlotly({
-    plot_pie_data(LANG_TLS,ZERO_POB_LIST,CUT_OFFS,"SURV_QUAL",calidad_data,get_a1_geo_id(input$calidad_select_admin1),return_table=F)
+    plot_pie_data(LANG_TLS,ZERO_POB_LIST,CUT_OFFS,"SURV_QUAL",calidad_data,get_a1_geo_id(input$calidad_select_admin1),return_table=FALSE)
   })
   
   cal_map_total <- reactiveValues(dat = 0)
@@ -1285,16 +1285,16 @@ server <- function(input, output, session) {
     title_pie_box(lang_label("PROG_DEL"),input$rendimiento_select_admin1)
   })
   
-  output$rendimiento_table <- renderDataTable(server = FALSE,{
+  output$rendimiento_table <- DT::renderDataTable(server = FALSE,{
     rend_get_data_table(LANG_TLS,CUT_OFFS,rendimiento_data,get_a1_geo_id(input$rendimiento_select_admin1))
   })
   
-  output$rendimiento_table_dist <- renderDataTable(server = FALSE,{
-    plot_pie_data(LANG_TLS,ZERO_POB_LIST,CUT_OFFS,"PROG_DEL",rendimiento_data,get_a1_geo_id(input$rendimiento_select_admin1),return_table=T)
+  output$rendimiento_table_dist <- DT::renderDataTable(server = FALSE,{
+    plot_pie_data(LANG_TLS,ZERO_POB_LIST,CUT_OFFS,"PROG_DEL",rendimiento_data,get_a1_geo_id(input$rendimiento_select_admin1),return_table=TRUE)
   })
   
   output$rendimiento_plot_pie <- renderPlotly({
-    plot_pie_data(LANG_TLS,ZERO_POB_LIST,CUT_OFFS,"PROG_DEL",rendimiento_data,get_a1_geo_id(input$rendimiento_select_admin1),return_table=F)
+    plot_pie_data(LANG_TLS,ZERO_POB_LIST,CUT_OFFS,"PROG_DEL",rendimiento_data,get_a1_geo_id(input$rendimiento_select_admin1),return_table=FALSE)
   })
   
   rendimiento_map_total <- reactiveValues(dat = 0)
@@ -1364,16 +1364,16 @@ server <- function(input, output, session) {
     title_pie_box(lang_label("THRE_ASSE"),input$amenaza_select_admin1)
   })
   
-  output$amenaza_table <- renderDataTable(server = FALSE,{
+  output$amenaza_table <- DT::renderDataTable(server = FALSE,{
     amenaza_get_data_table(LANG_TLS,CUT_OFFS,eval_amenaza_data,get_a1_geo_id(input$amenaza_select_admin1))
   })
   
-  output$amenaza_table_dist <- renderDataTable(server = FALSE,{
-    plot_pie_data(LANG_TLS,ZERO_POB_LIST,CUT_OFFS,"THRE_ASSE",eval_amenaza_data,get_a1_geo_id(input$amenaza_select_admin1),return_table=T)
+  output$amenaza_table_dist <- DT::renderDataTable(server = FALSE,{
+    plot_pie_data(LANG_TLS,ZERO_POB_LIST,CUT_OFFS,"THRE_ASSE",eval_amenaza_data,get_a1_geo_id(input$amenaza_select_admin1),return_table=TRUE)
   })
   
   output$amenaza_plot_pie <- renderPlotly({
-    plot_pie_data(LANG_TLS,ZERO_POB_LIST,CUT_OFFS,"THRE_ASSE",eval_amenaza_data,get_a1_geo_id(input$amenaza_select_admin1),return_table=F)
+    plot_pie_data(LANG_TLS,ZERO_POB_LIST,CUT_OFFS,"THRE_ASSE",eval_amenaza_data,get_a1_geo_id(input$amenaza_select_admin1),return_table=FALSE)
   })
   
   amenaza_map_total <- reactiveValues(dat = 0)
@@ -1461,16 +1461,16 @@ server <- function(input, output, session) {
     title_pie_box(lang_label("RAP_RES"),input$resrapida_select_admin1)
   })
   
-  output$resrapida_table <- renderDataTable(server = FALSE,{
+  output$resrapida_table <- DT::renderDataTable(server = FALSE,{
     resrapida_get_data_table(LANG_TLS,CUT_OFFS,respuesta_rapida_data,get_a1_geo_id(input$resrapida_select_admin1))
   })
   
-  output$resrapida_table_dist <- renderDataTable(server = FALSE,{
-    plot_pie_data(LANG_TLS,ZERO_POB_LIST,CUT_OFFS,"RAP_RES",respuesta_rapida_data,get_a1_geo_id(input$resrapida_select_admin1),return_table=T)
+  output$resrapida_table_dist <- DT::renderDataTable(server = FALSE,{
+    plot_pie_data(LANG_TLS,ZERO_POB_LIST,CUT_OFFS,"RAP_RES",respuesta_rapida_data,get_a1_geo_id(input$resrapida_select_admin1),return_table=TRUE)
   })
   
   output$resrapida_plot_pie <- renderPlotly({
-    plot_pie_data(LANG_TLS,ZERO_POB_LIST,CUT_OFFS,"RAP_RES",respuesta_rapida_data,get_a1_geo_id(input$resrapida_select_admin1),return_table=F)
+    plot_pie_data(LANG_TLS,ZERO_POB_LIST,CUT_OFFS,"RAP_RES",respuesta_rapida_data,get_a1_geo_id(input$resrapida_select_admin1),return_table=FALSE)
   })
   
   resrapida_map_total <- reactiveValues(dat = 0)
