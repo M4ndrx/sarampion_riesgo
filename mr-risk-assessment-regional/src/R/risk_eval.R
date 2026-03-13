@@ -477,6 +477,11 @@ aggregated_cases <- aggregated_cases %>%
   )
 
 inm_aggregated_cases <- aggregated_cases %>% 
+  mutate(
+    GEO_ID = as.character(GEO_ID),
+    Unvac_Or_Unknown_Case = as.numeric(Unvac_Or_Unknown_Case),
+    MMR_AGE_Elegible = as.numeric(MMR_AGE_Elegible)
+  ) %>%
   select("GEO_ID", "Unvac_Or_Unknown_Case", "MMR_AGE_Elegible") 
 
 
