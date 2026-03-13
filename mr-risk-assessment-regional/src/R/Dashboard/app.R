@@ -1041,11 +1041,11 @@ server <- function(input, output, session) {
   })
   
   output$inmunidad_table_dist <- DT::renderDataTable(server = FALSE,{
-    plot_pie_data(LANG_TLS,ZERO_POB_LIST,CUT_OFFS,"INM_POB",inmunidad_data,get_a1_geo_id(input$inmunidad_select_admin1),return_table=T)
+    plot_pie_data(LANG_TLS,ZERO_POB_LIST,CUT_OFFS,"INM_POB",inmunidad_data,get_a1_geo_id(input$inmunidad_select_admin1),return_table=TRUE)
   })
   
   output$inmunidad_plot_pie <- renderPlotly({
-    plot_pie_data(LANG_TLS,ZERO_POB_LIST,CUT_OFFS,"INM_POB",inmunidad_data,get_a1_geo_id(input$inmunidad_select_admin1),return_table=F)
+    plot_pie_data(LANG_TLS,ZERO_POB_LIST,CUT_OFFS,"INM_POB",inmunidad_data,get_a1_geo_id(input$inmunidad_select_admin1),return_table=FALSE)
   })
   
   inmu_map_total <- reactiveValues(dat = 0)
@@ -1158,11 +1158,11 @@ server <- function(input, output, session) {
   })
   
   output$calidad_table_dist <- DT::renderDataTable(server = FALSE,{
-    plot_pie_data(LANG_TLS,ZERO_POB_LIST,CUT_OFFS,"SURV_QUAL",calidad_data,get_a1_geo_id(input$calidad_select_admin1),return_table=T)
+    plot_pie_data(LANG_TLS,ZERO_POB_LIST,CUT_OFFS,"SURV_QUAL",calidad_data,get_a1_geo_id(input$calidad_select_admin1),return_table=TRUE)
   })
   
   output$calidad_plot_pie <- renderPlotly({
-    plot_pie_data(LANG_TLS,ZERO_POB_LIST,CUT_OFFS,"SURV_QUAL",calidad_data,get_a1_geo_id(input$calidad_select_admin1),return_table=F)
+    plot_pie_data(LANG_TLS,ZERO_POB_LIST,CUT_OFFS,"SURV_QUAL",calidad_data,get_a1_geo_id(input$calidad_select_admin1),return_table=FALSE)
   })
   
   cal_map_total <- reactiveValues(dat = 0)
@@ -1290,11 +1290,11 @@ server <- function(input, output, session) {
   })
   
   output$rendimiento_table_dist <- DT::renderDataTable(server = FALSE,{
-    plot_pie_data(LANG_TLS,ZERO_POB_LIST,CUT_OFFS,"PROG_DEL",rendimiento_data,get_a1_geo_id(input$rendimiento_select_admin1),return_table=T)
+    plot_pie_data(LANG_TLS,ZERO_POB_LIST,CUT_OFFS,"PROG_DEL",rendimiento_data,get_a1_geo_id(input$rendimiento_select_admin1),return_table=TRUE)
   })
   
   output$rendimiento_plot_pie <- renderPlotly({
-    plot_pie_data(LANG_TLS,ZERO_POB_LIST,CUT_OFFS,"PROG_DEL",rendimiento_data,get_a1_geo_id(input$rendimiento_select_admin1),return_table=F)
+    plot_pie_data(LANG_TLS,ZERO_POB_LIST,CUT_OFFS,"PROG_DEL",rendimiento_data,get_a1_geo_id(input$rendimiento_select_admin1),return_table=FALSE)
   })
   
   rendimiento_map_total <- reactiveValues(dat = 0)
@@ -1369,11 +1369,11 @@ server <- function(input, output, session) {
   })
   
   output$amenaza_table_dist <- DT::renderDataTable(server = FALSE,{
-    plot_pie_data(LANG_TLS,ZERO_POB_LIST,CUT_OFFS,"THRE_ASSE",eval_amenaza_data,get_a1_geo_id(input$amenaza_select_admin1),return_table=T)
+    plot_pie_data(LANG_TLS,ZERO_POB_LIST,CUT_OFFS,"THRE_ASSE",eval_amenaza_data,get_a1_geo_id(input$amenaza_select_admin1),return_table=TRUE)
   })
   
   output$amenaza_plot_pie <- renderPlotly({
-    plot_pie_data(LANG_TLS,ZERO_POB_LIST,CUT_OFFS,"THRE_ASSE",eval_amenaza_data,get_a1_geo_id(input$amenaza_select_admin1),return_table=F)
+    plot_pie_data(LANG_TLS,ZERO_POB_LIST,CUT_OFFS,"THRE_ASSE",eval_amenaza_data,get_a1_geo_id(input$amenaza_select_admin1),return_table=FALSE)
   })
   
   amenaza_map_total <- reactiveValues(dat = 0)
@@ -1466,11 +1466,11 @@ server <- function(input, output, session) {
   })
   
   output$resrapida_table_dist <- DT::renderDataTable(server = FALSE,{
-    plot_pie_data(LANG_TLS,ZERO_POB_LIST,CUT_OFFS,"RAP_RES",respuesta_rapida_data,get_a1_geo_id(input$resrapida_select_admin1),return_table=T)
+    plot_pie_data(LANG_TLS,ZERO_POB_LIST,CUT_OFFS,"RAP_RES",respuesta_rapida_data,get_a1_geo_id(input$resrapida_select_admin1),return_table=TRUE)
   })
   
   output$resrapida_plot_pie <- renderPlotly({
-    plot_pie_data(LANG_TLS,ZERO_POB_LIST,CUT_OFFS,"RAP_RES",respuesta_rapida_data,get_a1_geo_id(input$resrapida_select_admin1),return_table=F)
+    plot_pie_data(LANG_TLS,ZERO_POB_LIST,CUT_OFFS,"RAP_RES",respuesta_rapida_data,get_a1_geo_id(input$resrapida_select_admin1),return_table=FALSE)
   })
   
   resrapida_map_total <- reactiveValues(dat = 0)
