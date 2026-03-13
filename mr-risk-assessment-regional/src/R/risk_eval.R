@@ -454,6 +454,28 @@ colnames(aggregated_cases) <- c("ADMIN1 GEO_ID", "GEO_ID","ADMIN1","ADMIN2",
                           "Adequate_Specimen_Coll", "Timely_Avail_Of_Lab_Results",
                           "Unvac_Or_Unknown_Case", "Suspected_Case","MMR_AGE_Elegible",
                           "Specimen_Collected")
+
+clean_numeric <- function(x) {
+  x <- as.character(x)
+  x <- gsub(",", ".", x, fixed = TRUE)
+  x <- gsub("[^0-9.-]", "", x)
+  x[x == ""] <- NA_character_
+  as.numeric(x)
+}
+
+aggregated_cases <- aggregated_cases %>%
+  mutate(
+    GEO_ID = as.character(GEO_ID),
+    tasa_casos = clean_numeric(tasa_casos),
+    Adequate_Investigation = clean_numeric(Adequate_Investigation),
+    Adequate_Specimen_Coll = clean_numeric(Adequate_Specimen_Coll),
+    Timely_Avail_Of_Lab_Results = clean_numeric(Timely_Avail_Of_Lab_Results),
+    Unvac_Or_Unknown_Case = clean_numeric(Unvac_Or_Unknown_Case),
+    Suspected_Case = clean_numeric(Suspected_Case),
+    MMR_AGE_Elegible = clean_numeric(MMR_AGE_Elegible),
+    Specimen_Collected = clean_numeric(Specimen_Collected)
+  )
+
 inm_aggregated_cases <- aggregated_cases %>% 
   mutate(
     GEO_ID = as.character(GEO_ID),
@@ -586,8 +608,8 @@ inmunidad_data$cob_last_camp_PR[is.na(inmunidad_data$cob_last_camp_PR)] = 8
 
 inmunidad_data <- full_join(inmunidad_data,inm_aggregated_cases,by="GEO_ID")
 
-inmunidad_data$Unvac_Or_Unknown_Case <- as.numeric(inmunidad_data$Unvac_Or_Unknown_Case)
-inmunidad_data$MMR_AGE_Elegible <- as.numeric(inmunidad_data$MMR_AGE_Elegible)
+inmunidad_data$Unvac_Or_Unknown_Case <- clean_numeric(inmunidad_data$Unvac_Or_Unknown_Case)
+inmunidad_data$MMR_AGE_Elegible <- clean_numeric(inmunidad_data$MMR_AGE_Elegible)
 inmunidad_data$Unvac_Or_Unknown_Case[is.na(inmunidad_data$Unvac_Or_Unknown_Case)] = 0
 inmunidad_data$MMR_AGE_Elegible[is.na(inmunidad_data$MMR_AGE_Elegible)] = 0
 inmunidad_data$p_sospechosos_novac <- ifelse(
@@ -609,13 +631,13 @@ calidad_data <- id_data
 calidad_data <- left_join(calidad_data,pop_data %>% select(-ADMIN1,-ADMIN2,-dens_pob),by=c("ADMIN1 GEO_ID","GEO_ID"))
 calidad_data <- calidad_data %>% filter(!is.na(GEO_ID) & GEO_ID %!in% ZERO_POB_LIST)
 calidad_data <- left_join(calidad_data,aggregated_cases %>% select("GEO_ID","tasa_casos","Adequate_Investigation","Adequate_Specimen_Coll","Timely_Avail_Of_Lab_Results"),by="GEO_ID")
-calidad_data[is.na(calidad_data)] = 0
+calidad_data <- calidad_data %>% mutate(across(where(is.numeric), ~ ifelse(is.na(.x), 0, .x)))
 
 #calidad_data$tasa_casos <- round(calidad_data$Suspected_Case*100000/calidad_data$POB,1)
 calidad_data$p_casos_inv <- round(calidad_data$Adequate_Investigation)
 calidad_data$p_casos_muestra <- round(calidad_data$Adequate_Specimen_Coll)
 calidad_data$p_muestras_lab <- round(calidad_data$Timely_Avail_Of_Lab_Results)
-calidad_data[is.na(calidad_data)] = 0
+calidad_data <- calidad_data %>% mutate(across(where(is.numeric), ~ ifelse(is.na(.x), 0, .x)))
 
 # Risk points para tasa de casos, formula compuesta
 calidad_data$tasa_casos_PR <- 0 # iniciar en 0
