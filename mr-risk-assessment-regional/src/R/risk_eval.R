@@ -455,6 +455,11 @@ colnames(aggregated_cases) <- c("ADMIN1 GEO_ID", "GEO_ID","ADMIN1","ADMIN2",
                           "Unvac_Or_Unknown_Case", "Suspected_Case","MMR_AGE_Elegible",
                           "Specimen_Collected")
 inm_aggregated_cases <- aggregated_cases %>% 
+  mutate(
+    GEO_ID = as.character(GEO_ID),
+    Unvac_Or_Unknown_Case = as.numeric(Unvac_Or_Unknown_Case),
+    MMR_AGE_Elegible = as.numeric(MMR_AGE_Elegible)
+  ) %>%
   select("GEO_ID", "Unvac_Or_Unknown_Case", "MMR_AGE_Elegible") 
 
 
@@ -581,9 +586,15 @@ inmunidad_data$cob_last_camp_PR[is.na(inmunidad_data$cob_last_camp_PR)] = 8
 
 inmunidad_data <- full_join(inmunidad_data,inm_aggregated_cases,by="GEO_ID")
 
-inmunidad_data$p_sospechosos_novac <- round(inmunidad_data$Unvac_Or_Unknown_Case/inmunidad_data$MMR_AGE_Elegible*100,0)
+inmunidad_data$Unvac_Or_Unknown_Case <- as.numeric(inmunidad_data$Unvac_Or_Unknown_Case)
+inmunidad_data$MMR_AGE_Elegible <- as.numeric(inmunidad_data$MMR_AGE_Elegible)
 inmunidad_data$Unvac_Or_Unknown_Case[is.na(inmunidad_data$Unvac_Or_Unknown_Case)] = 0
 inmunidad_data$MMR_AGE_Elegible[is.na(inmunidad_data$MMR_AGE_Elegible)] = 0
+inmunidad_data$p_sospechosos_novac <- ifelse(
+  inmunidad_data$MMR_AGE_Elegible > 0,
+  round(inmunidad_data$Unvac_Or_Unknown_Case / inmunidad_data$MMR_AGE_Elegible * 100, 0),
+  0
+)
 inmunidad_data$p_sospechosos_novac[is.na(inmunidad_data$p_sospechosos_novac)] = 0
 inmunidad_data$p_sospechosos_novac_PR <- score_sospechosos_novac_SRP(as.integer(round(inmunidad_data$p_sospechosos_novac,0)))
 inmunidad_data$TOTAL_PR <- inmunidad_data$SRP1_PR + inmunidad_data$SRP2_PR + inmunidad_data$cob_last_camp_PR + inmunidad_data$p_sospechosos_novac_PR
