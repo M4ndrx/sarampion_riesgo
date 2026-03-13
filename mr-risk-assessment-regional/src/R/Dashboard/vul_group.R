@@ -44,7 +44,7 @@ vul_plot_map_data <- function(LANG_TLS,COUNTRY_NAME,YEAR_LIST,ZERO_POB_LIST,CUT_
   
   data <- data %>% select(-ADMIN1,-ADMIN2)
   map_data <- full_join(map_data,data,by="GEO_ID")
-  map_data <- map_data %>% rename("var"=pres_type)
+  map_data <- map_data %>% rename(var = all_of(pres_type))
   
   map_data$`ADMIN1 GEO_ID`[is.na(map_data$`ADMIN1 GEO_ID`) & map_data$ADMIN1 == admin1] <- admin1_geo_id_df$`ADMIN1 GEO_ID`[admin1_geo_id_df$ADMIN1 == admin1]
   
@@ -93,7 +93,7 @@ vul_plot_map_data <- function(LANG_TLS,COUNTRY_NAME,YEAR_LIST,ZERO_POB_LIST,CUT_
     ) %>% lapply(HTML)
     
     # MAPA
-    map <- leaflet(map_data,options = leafletOptions(doubleClickZoom = T, attributionControl = F, zoomSnap=0.1, zoomDelta=0.1)) %>%
+    map <- leaflet(map_data,options = leafletOptions(doubleClickZoom = T, attributionControl = F, zoomSnap=0.1, zoomDelta=0.1, preferCanvas = TRUE)) %>%
       addProviderTiles(providers$Esri.WorldGrayCanvas) %>%
       addPolygons(
         fillColor   = ~pal_gradient(var),
@@ -164,7 +164,7 @@ vul_plot_map_data <- function(LANG_TLS,COUNTRY_NAME,YEAR_LIST,ZERO_POB_LIST,CUT_
     
     
     # MAPA
-    map <- leaflet(map_data,options = leafletOptions(doubleClickZoom = T, attributionControl = F, zoomSnap=0.1, zoomDelta=0.1)) %>%
+    map <- leaflet(map_data,options = leafletOptions(doubleClickZoom = T, attributionControl = F, zoomSnap=0.1, zoomDelta=0.1, preferCanvas = TRUE)) %>%
       addProviderTiles(providers$Esri.WorldGrayCanvas) %>%
       addPolygons(
         fillColor   = ~pal_gradient(var_num),
