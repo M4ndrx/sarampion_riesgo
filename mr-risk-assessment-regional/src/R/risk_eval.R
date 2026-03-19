@@ -747,11 +747,15 @@ respuesta_rapida_data$TOTAL_PR <- respuesta_rapida_data$equipo_PR+respuesta_rapi
 respuesta_rapida_data_join <- respuesta_rapida_data %>% select(`ADMIN1 GEO_ID`,GEO_ID,RES_RAPIDA=TOTAL_PR)
 indicadores_data <- left_join(indicadores_data,respuesta_rapida_data_join,by=c("ADMIN1 GEO_ID","GEO_ID"))
 
-indicadores_data$TOTAL_PR = indicadores_data$INMUNIDAD_POB+
-  indicadores_data$CALIDAD_VIG+
-  indicadores_data$RENDIMIENTO_PROG+
-  indicadores_data$EVAL_AMENAZA+
-  indicadores_data$RES_RAPIDA
+general_risk_components <- c(
+  "INMUNIDAD_POB", "CALIDAD_VIG", "RENDIMIENTO_PROG",
+  "EVAL_AMENAZA", "RES_RAPIDA"
+)
+
+indicadores_data <- indicadores_data %>%
+  mutate(across(any_of(general_risk_components), ~ clean_numeric(.x))) %>%
+  mutate(across(any_of(general_risk_components), ~ ifelse(is.na(.x), 0, .x))) %>%
+  mutate(TOTAL_PR = rowSums(across(all_of(general_risk_components)), na.rm = TRUE))
 
 # shapefiles ----
 country_shapes <- st_read(PATH_shapefiles,layer="admin2")
