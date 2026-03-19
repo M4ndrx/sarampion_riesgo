@@ -463,17 +463,16 @@ clean_numeric <- function(x) {
   as.numeric(x)
 }
 
+case_numeric_fields <- c(
+  "tasa_casos", "Adequate_Investigation", "Adequate_Specimen_Coll",
+  "Timely_Avail_Of_Lab_Results", "Unvac_Or_Unknown_Case",
+  "Suspected_Case", "MMR_AGE_Elegible", "Specimen_Collected"
+)
+
 aggregated_cases <- aggregated_cases %>%
   mutate(
     GEO_ID = as.character(GEO_ID),
-    tasa_casos = clean_numeric(tasa_casos),
-    Adequate_Investigation = clean_numeric(Adequate_Investigation),
-    Adequate_Specimen_Coll = clean_numeric(Adequate_Specimen_Coll),
-    Timely_Avail_Of_Lab_Results = clean_numeric(Timely_Avail_Of_Lab_Results),
-    Unvac_Or_Unknown_Case = clean_numeric(Unvac_Or_Unknown_Case),
-    Suspected_Case = clean_numeric(Suspected_Case),
-    MMR_AGE_Elegible = clean_numeric(MMR_AGE_Elegible),
-    Specimen_Collected = clean_numeric(Specimen_Collected)
+    across(any_of(case_numeric_fields), clean_numeric)
   )
 
 inm_aggregated_cases <- aggregated_cases %>% 
