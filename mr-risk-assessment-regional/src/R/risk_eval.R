@@ -463,17 +463,16 @@ clean_numeric <- function(x) {
   as.numeric(x)
 }
 
+case_numeric_fields <- c(
+  "tasa_casos", "Adequate_Investigation", "Adequate_Specimen_Coll",
+  "Timely_Avail_Of_Lab_Results", "Unvac_Or_Unknown_Case",
+  "Suspected_Case", "MMR_AGE_Elegible", "Specimen_Collected"
+)
+
 aggregated_cases <- aggregated_cases %>%
   mutate(
     GEO_ID = as.character(GEO_ID),
-    tasa_casos = clean_numeric(tasa_casos),
-    Adequate_Investigation = clean_numeric(Adequate_Investigation),
-    Adequate_Specimen_Coll = clean_numeric(Adequate_Specimen_Coll),
-    Timely_Avail_Of_Lab_Results = clean_numeric(Timely_Avail_Of_Lab_Results),
-    Unvac_Or_Unknown_Case = clean_numeric(Unvac_Or_Unknown_Case),
-    Suspected_Case = clean_numeric(Suspected_Case),
-    MMR_AGE_Elegible = clean_numeric(MMR_AGE_Elegible),
-    Specimen_Collected = clean_numeric(Specimen_Collected)
+    across(any_of(case_numeric_fields), clean_numeric)
   )
 
 inm_aggregated_cases <- aggregated_cases %>% 
@@ -748,11 +747,15 @@ respuesta_rapida_data$TOTAL_PR <- respuesta_rapida_data$equipo_PR+respuesta_rapi
 respuesta_rapida_data_join <- respuesta_rapida_data %>% select(`ADMIN1 GEO_ID`,GEO_ID,RES_RAPIDA=TOTAL_PR)
 indicadores_data <- left_join(indicadores_data,respuesta_rapida_data_join,by=c("ADMIN1 GEO_ID","GEO_ID"))
 
-indicadores_data$TOTAL_PR = indicadores_data$INMUNIDAD_POB+
-  indicadores_data$CALIDAD_VIG+
-  indicadores_data$RENDIMIENTO_PROG+
-  indicadores_data$EVAL_AMENAZA+
-  indicadores_data$RES_RAPIDA
+general_risk_components <- c(
+  "INMUNIDAD_POB", "CALIDAD_VIG", "RENDIMIENTO_PROG",
+  "EVAL_AMENAZA", "RES_RAPIDA"
+)
+
+indicadores_data <- indicadores_data %>%
+  mutate(across(any_of(general_risk_components), ~ clean_numeric(.x))) %>%
+  mutate(across(any_of(general_risk_components), ~ ifelse(is.na(.x), 0, .x))) %>%
+  mutate(TOTAL_PR = rowSums(across(all_of(general_risk_components)), na.rm = TRUE))
 
 # shapefiles ----
 country_shapes <- st_read(PATH_shapefiles,layer="admin2")

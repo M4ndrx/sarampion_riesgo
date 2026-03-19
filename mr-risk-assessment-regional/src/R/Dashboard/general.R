@@ -573,6 +573,11 @@ get_box_text <- function(dat_box,total,risk_type) {
 
 datos_boxes <- function(LANG_TLS,ind_data) {
   
+  if (!"risk_level" %in% colnames(ind_data)) {
+    dat_total <- if (is.null(ind_data)) 0 else nrow(ind_data)
+    return(c(0,0,0,0,dat_total))
+  }
+  
   ind_data$CANTIDAD <- 1
   dat_LR <- sum(ind_data$CANTIDAD[ind_data$risk_level == lang_label_tls(LANG_TLS,"LR")])
   dat_MR <- sum(ind_data$CANTIDAD[ind_data$risk_level == lang_label_tls(LANG_TLS,"MR")])
